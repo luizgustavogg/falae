@@ -1,0 +1,65 @@
+<div class="register-container">
+  <div class="register-title">
+    <h1>Falaê</h1>
+    <span> | </span>
+    <h2>Cadastro</h2>
+  </div>
+  <form (submit)="clickRegister($event)">
+    <div class="form-group">
+      <label for="email">Nome</label>
+      <input
+        type="text"
+        id="username"
+        placeholder="Digite seu Nome"
+        required
+        [(ngModel)]="username"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Digite seu e-mail"
+        required
+        [(ngModel)]="email"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input
+        type="password"
+        id="senha"
+        placeholder="Digite sua senha"
+        required
+        [(ngModel)]="password"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+
+    <!-- Input de Imagem -->
+    <!-- <div class="form-group">
+      <label for="image-upload" class="image-upload-label">
+        <span>Escolher Imagem</span>
+        <input
+          type="file"
+          id="image-upload"
+          accept="image/*"
+          required
+          (change)="onImageSelected($event)"
+        />
+      </label>
+      <div class="image-preview" id="image-preview"></div>
+    </div> -->
+
+    <button type="submit">Entrar</button>
+
+    <div class="register-links">
+      <a href="#">Quero fazer meu login</a>
+    </div>
+  </form>
+</div>

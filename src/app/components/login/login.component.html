@@ -1,0 +1,40 @@
+<div class="login-container">
+  <div class="login-title">
+    <h1>Falaê</h1>
+    <span> | </span>
+    <h2>Entrar</h2>
+  </div>
+  <form (submit)="clickLogin($event)">
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Digite seu e-mail"
+        required
+        [(ngModel)]="email"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input
+        type="password"
+        id="senha"
+        placeholder="Digite sua senha"
+        required
+        [(ngModel)]="password"
+        [ngModelOptions]="{ standalone: true }"
+      />
+    </div>
+
+    <button type="submit">Entrar</button>
+
+    <div class="login-links">
+      <a href="#">Esqueci minha senha</a>
+      <span> | </span>
+      <a href="register">Quero me cadastrar</a>
+    </div>
+  </form>
+</div>
