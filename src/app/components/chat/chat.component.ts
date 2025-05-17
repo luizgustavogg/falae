@@ -64,7 +64,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.stopPolling();
     this.loadChat(receiverId);
-    this.selectedUser = this.users.find((u) => u.id === receiverId); // 👈 adiciona isso
+    this.selectedUser = this.users.find((u) => u.id === receiverId);
 
     this.pollingSubscription = interval(1000).subscribe(() => {
       if (this.currentReceiverId) {

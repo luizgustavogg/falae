@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthResponse } from '../types/auth-response.model'; // novo tipo
+import { AuthResponse } from '../types/auth-response.model';
 import { User } from '../types/user.model';
 
 @Injectable({
@@ -38,7 +38,7 @@ homeChat(): Observable<{ users: any[], myName: string, myId: number, chat: any }
   const token = localStorage.getItem('token');
   return this.http.post<{ users: any[], myName: string, myId: number, chat: any }>(
     'http://localhost:3000/chat',
-    {}, // sem receiverId
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,
