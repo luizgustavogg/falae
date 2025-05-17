@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackendService } from '../../../services/backend.service';
 import { Subscription, interval } from 'rxjs';
@@ -12,12 +19,15 @@ import { Subscription, interval } from 'rxjs';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit, OnDestroy {
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+
   users: any[] = [];
   myName: string = '';
   chat: any = { messages: [] };
   myId: number = 0;
   message: string = '';
   searchTerm: string = '';
+  selectedUser: any = null;
 
   private pollingSubscription?: Subscription;
   private currentReceiverId?: number;
@@ -52,12 +62,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   openChat(receiverId: number) {
     this.currentReceiverId = receiverId;
 
-    // Para garantir que não fique múltiplos polling ativos
     this.stopPolling();
-
     this.loadChat(receiverId);
+    this.selectedUser = this.users.find((u) => u.id === receiverId); // 👈 adiciona isso
 
-    // Começa polling a cada 3 segundos para atualizar mensagens
     this.pollingSubscription = interval(1000).subscribe(() => {
       if (this.currentReceiverId) {
         this.loadChat(this.currentReceiverId);
@@ -65,10 +73,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadChat(receiverId: number) {
+  private loadChat(receiverId: number, scroll: boolean = true) {
     this.homeChat.openChatWithUser(receiverId).subscribe(
       (res: any) => {
+        const oldLength = this.chat.messages.length;
         this.chat = res.chat;
+        if (scroll || res.chat.messages.length !== oldLength) {
+          setTimeout(() => this.scrollToBottom(), 100);
+        }
       },
       (err) => {
         console.error('Erro ao abrir conversa:', err);
@@ -81,13 +93,23 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.homeChat.sendMessage(this.chat.id, this.message).subscribe(
       (msg: any) => {
-        this.chat.messages.push(msg); // adiciona nova mensagem no array
-        this.message = ''; // limpa input
+        this.chat.messages.push(msg);
+        this.message = '';
+        setTimeout(() => this.scrollToBottom(), 100);
       },
       (error) => {
         console.error('Erro ao enviar mensagem:', error);
       }
     );
+  }
+
+  private scrollToBottom(): void {
+    try {
+      const el = this.messagesContainer.nativeElement;
+      el.scrollTop = el.scrollHeight;
+    } catch (err) {
+      console.error('Erro ao rolar mensagens:', err);
+    }
   }
 
   private stopPolling() {
