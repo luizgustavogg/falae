@@ -1,59 +1,60 @@
-# Falae
+# Angular Frontend - Chat App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+Este é o frontend da aplicação de chat desenvolvida em Angular, que se comunica com uma API Node.js utilizando JWT para autenticação. O projeto conta com três componentes principais: **Login**, **Registro** e **Chat**.
 
-## Development server
+## 🛠 Tecnologias Utilizadas
 
-To start a local development server, run:
+- [Angular](https://angular.io/) 16+
+- RxJS
+- Angular Router
+- Angular Forms
+- Angular Standalone Components
+- HTTP Interceptor (para autenticação JWT)
+- TypeScript
+
+## 📁 Estrutura de Componentes
+
+- `login.component.ts/html/scss`: Tela de login de usuário.
+- `register.component.ts/html/scss`: Tela de registro de novo usuário.
+- `chat.component.ts/html/scss`: Tela principal de conversa (chat em tempo real via polling).
+- `services/backend.service.ts`: Serviço que faz a comunicação HTTP com o backend.
+- `interceptors/auth.interceptor.ts`: Interceptador para envio automático do token JWT e redirecionamento em erros.
+
+## 📦 Instalação
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/luizgustavogg/falae
+cd falae
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Rode a aplicação
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acesse no navegador: `http://localhost:4200`
 
-## Code scaffolding
+## ⚙️ Configurações adicionais
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Certifique-se de que o backend Node.js está rodando em `http://localhost:3000`
+- O token JWT é armazenado em `localStorage` após o login
+- As requisições protegidas são automaticamente interceptadas e enviadas com o token pelo `auth.interceptor.ts`
 
-```bash
-ng generate component component-name
-```
+## 🔒 Segurança
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Autenticação baseada em JWT
+- Senhas são validadas no backend com SHA256
+- O interceptor redireciona o usuário para a página de login se o token for inválido
 
-```bash
-ng generate --help
-```
+## 📬 Contato
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Caso tenha dúvidas ou queira contribuir, sinta-se à vontade para abrir uma _issue_ ou enviar um _pull request_.
