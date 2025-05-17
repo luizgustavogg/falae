@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   standalone: true
 })
 export class LoginComponent {
+
+  errorMessage: string = '';
+
   email: string = '';
   password: string = '';
 
@@ -22,10 +25,10 @@ export class LoginComponent {
     this.loginService.loginUser(this.email, this.password).subscribe(
       (response) => {
         localStorage.setItem('token', response.token); 
-        console.log("login:", response.token);
         this.loginService.redirectionUser('/chat');
       },
       (error) => {
+        this.errorMessage = error.error.message || 'Erro desconhecido';
         console.log('deu erro ai chefe: ', error);
       }
     );

@@ -6,6 +6,10 @@
   </div>
   <form (submit)="clickRegister($event)">
     <div class="form-group">
+      <div *ngIf="errorMessage" class="erro-mensagem">
+        {{ errorMessage }}
+      </div>
+
       <label for="email">Nome</label>
       <input
         type="text"

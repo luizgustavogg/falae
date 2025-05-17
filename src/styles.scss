@@ -16,3 +16,23 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
 }
+.message {
+  padding: 0.8rem 1rem;
+  border-radius: 16px;
+  max-width: 60%;
+  font-size: 1rem;
+  word-wrap: break-word;
+}
+
+.sent {
+  align-self: flex-end;
+  background-color: var(--chat-sent-bg);
+  color: #fff;
+}
+
+.received {
+  align-self: flex-start;
+  background-color: var(--chat-received-bg);
+  border: 1px solid #ccc;
+  color: #fff;
+}

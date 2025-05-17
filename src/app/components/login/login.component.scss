@@ -42,7 +42,7 @@
     }
 
     input {
-      width: 100%;
+      width: 93%;
       padding: 0.75rem;
       border-radius: var(--radius);
       border: 1px solid var(--input-border);
@@ -91,4 +91,21 @@
       }
     }
   }
+}
+
+@media(min-width: 800px) {
+  .erro-mensagem {
+    max-width: 100%;
+  }
+}
+
+.erro-mensagem {
+  background-color: rgb(255, 156, 156);
+  padding: 10px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid rgb(184, 99, 99);
+  color: rgb(169, 58, 58);
+  margin-bottom: 10px;
+
 }

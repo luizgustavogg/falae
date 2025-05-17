@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
 })
 export class RegisterComponent {
+
+  errorMessage: string = '';
+
   username: string = '';
   email: string = '';
   password: string = '';
@@ -38,7 +41,7 @@ export class RegisterComponent {
           this.registerService.redirectionUser('chat');
         },
         (error) => {
-          console.log('Error ao registrar sua conta: ', error);
+          this.errorMessage = error.error.message || 'Erro desconhecido';
         }
       );
   }

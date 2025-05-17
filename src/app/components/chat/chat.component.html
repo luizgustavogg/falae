@@ -1,33 +1,55 @@
 <div class="chat-container">
-    <!-- Barra lateral com usuários e pesquisa -->
-    <div class="users-list">
-        <div class="search-bar">
-          <h1>Falaê</h1>  
-        <input type="text" placeholder="Pesquisar..." id="search-users" />
+  <!-- Barra lateral com usuários e pesquisa -->
+  <div class="users-list">
+    <div class="search-bar">
+      <div class="nameUser">
+        <h1><a href="login">Falaê</a></h1>
+        <p>|</p>
+        <p>{{ myName }}</p>
       </div>
-      <div class="user" *ngFor="let user of users">
-        <img src="/assets/img/user-avatar.jpg" alt="User Avatar" />
-        <div class="user-info">
-          <span class="user-name">{{ user.name }}</span>
-          <span class="last-message">{{ user.lastMessage }}</span>
-        </div>
-      </div>
+      <input
+        type="text"
+        placeholder="Pesquisar..."
+        id="search-users"
+        name="search"
+        [(ngModel)]="searchTerm"
+      />
     </div>
-  
-    <!-- Área de chat com mensagens -->
-    <div class="chat-box">
-      <div class="messages" id="messages">
-        <div class="message received">Oi! Tudo bem?</div>
-        <div class="message sent">Tudo sim, e você?</div>
-        <div class="message received">Também! Vamos sair hoje?</div>
-        <div class="message sent">Claro, que horas?</div>
-        <div class="message received">19h está bom pra você?</div>
-        <div class="message sent">Perfeito. Até mais!</div>
-      </div>
-      <div class="chat-input">
-        <input type="text" placeholder="Digite sua mensagem..." id="message-input" />
-        <button id="send-button">Enviar</button>
+
+    <!-- Lista de usuários -->
+    <div class="user" *ngFor="let user of filteredUsers" (click)="openChat(user.id)">
+      <img src="/assets/img/user-avatar.jpg" alt="User Avatar" />
+      <div class="user-info">
+        <span class="user-name">{{ user.username }}</span>
+        <span class="last-message">Ultima Mensagem!</span>
       </div>
     </div>
   </div>
-  
+
+  <!-- Área de chat com mensagens -->
+  <div class="chat-box">
+    <div class="messages">
+      <div
+        class="message"
+        *ngFor="let message of chat.messages"
+        [ngClass]="{
+          sent: message.sender.id === myId,
+          received: message.sender.id !== myId
+        }"
+      >
+        <!-- <span class="message-author">{{ message.sender.username }}:</span> -->
+        <span class="message-content">{{ message.contentMessage }}</span>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input
+        type="text"
+        placeholder="Digite sua mensagem..."
+        id="message-input"
+        [(ngModel)]="message"
+      />
+      <button id="send-button" (click)="sendMessage()">Enviar</button>
+    </div>
+  </div>
+</div>

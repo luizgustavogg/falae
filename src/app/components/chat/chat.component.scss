@@ -22,10 +22,26 @@
 
       h1 {
         text-align: center;
-        color: var(--text-color);
-        margin-bottom: 1.5rem;
         font-weight: bold;
         font-size: 3rem;
+      }
+      
+      a{
+        text-decoration: none;
+        color: var(--text-color);
+      }
+      
+      p{
+        text-align: center;
+        font-size: 1.5rem;
+      }
+
+      .nameUser{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
       }
     }
 
@@ -70,6 +86,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    gap: 5px;
 
     .messages {
       flex: 1;
@@ -81,27 +98,6 @@
       background: #f9f9f9;
       border: 1px solid #ddd;
       border-radius: 12px;
-
-      .message {
-        padding: 0.8rem 1rem;
-        border-radius: 16px;
-        max-width: 60%;
-        font-size: 1rem;
-        word-wrap: break-word;
-      }
-
-      .sent {
-        align-self: flex-end;
-        background-color: var(--chat-sent-bg);
-        color: #fff;
-      }
-
-      .received {
-        align-self: flex-start;
-        background-color: var(--chat-received-bg);
-        border: 1px solid #ccc;
-        color: #fff;
-      }
     }
 
     .chat-input {
