@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackendService } from '../../../services/backend.service';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -10,30 +11,36 @@ import { BackendService } from '../../../services/backend.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   users: any[] = [];
-  myName: String = '';
-  chat: any = {};
+  myName: string = '';
+  chat: any = { messages: [] };
   myId: number = 0;
   message: string = '';
   searchTerm: string = '';
 
+  private pollingSubscription?: Subscription;
+  private currentReceiverId?: number;
+
   constructor(private homeChat: BackendService) {}
 
-ngOnInit(): void {
-  this.homeChat.homeChat().subscribe(
-    (response: any) => {
-      this.users = response.users || [];
-      this.chat = response.chat || { messages: [] };
-      this.myName = response.myName;
-      this.myId = response.myId;
-    },
-    (error) => {
-      console.error('Erro ao carregar dados do chat:', error);
-      this.homeChat.redirectionUser('login');
-    }
-  );
-}
+  ngOnInit(): void {
+    this.homeChat.homeChat().subscribe(
+      (response: any) => {
+        this.users = response.users || [];
+        this.myName = response.myName;
+        this.myId = response.myId;
+      },
+      (error) => {
+        console.error('Erro ao carregar dados do chat:', error);
+        this.homeChat.redirectionUser('login');
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.stopPolling();
+  }
 
   get filteredUsers() {
     const term = this.searchTerm.toLowerCase();
@@ -43,6 +50,22 @@ ngOnInit(): void {
   }
 
   openChat(receiverId: number) {
+    this.currentReceiverId = receiverId;
+
+    // Para garantir que não fique múltiplos polling ativos
+    this.stopPolling();
+
+    this.loadChat(receiverId);
+
+    // Começa polling a cada 3 segundos para atualizar mensagens
+    this.pollingSubscription = interval(1000).subscribe(() => {
+      if (this.currentReceiverId) {
+        this.loadChat(this.currentReceiverId);
+      }
+    });
+  }
+
+  private loadChat(receiverId: number) {
     this.homeChat.openChatWithUser(receiverId).subscribe(
       (res: any) => {
         this.chat = res.chat;
@@ -58,12 +81,19 @@ ngOnInit(): void {
 
     this.homeChat.sendMessage(this.chat.id, this.message).subscribe(
       (msg: any) => {
-        this.chat.messages.push(msg); // adiciona nova msg no array
+        this.chat.messages.push(msg); // adiciona nova mensagem no array
         this.message = ''; // limpa input
       },
       (error) => {
         console.error('Erro ao enviar mensagem:', error);
       }
     );
+  }
+
+  private stopPolling() {
+    if (this.pollingSubscription) {
+      this.pollingSubscription.unsubscribe();
+      this.pollingSubscription = undefined;
+    }
   }
 }
