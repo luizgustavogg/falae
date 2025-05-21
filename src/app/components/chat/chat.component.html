@@ -1,6 +1,12 @@
 <div class="chat-container">
-  <!-- Barra lateral com usuários e pesquisa -->
-  <div class="users-list">
+
+  <!-- Botão hamburguer no mobile -->
+  <button class="menu-toggle" (click)="toggleMenu()" *ngIf="isMobile">
+    &#9776;
+  </button>
+
+  <!-- Menu lateral (visível ou não baseado no estado) -->
+  <div class="users-list" [class.active]="menuOpen || !isMobile">
     <div class="search-bar">
       <div class="nameUser">
         <h1><a href="login">Falaê</a></h1>
@@ -10,8 +16,6 @@
       <input
         type="text"
         placeholder="Pesquisar..."
-        id="search-users"
-        name="search"
         [(ngModel)]="searchTerm"
       />
     </div>
@@ -20,7 +24,7 @@
     <div
       class="user"
       *ngFor="let user of filteredUsers"
-      (click)="openChat(user.id)"
+      (click)="openChat(user.id); closeMenu()"
     >
       <img src="/assets/img/user-avatar.jpg" alt="User Avatar" />
       <div class="user-info">
@@ -32,13 +36,12 @@
     </div>
   </div>
 
-  <!-- Área de chat com mensagens -->
+  <!-- Chat -->
   <div class="chat-box">
-    <!-- Cabeçalho do chat com nome e avatar -->
-<div class="chat-header" *ngIf="selectedUser">
-  <img src="/assets/img/user-avatar.jpg" alt="User Avatar" />
-  <span class="chat-username">{{ selectedUser.username }}</span>
-</div>
+    <div class="chat-header" *ngIf="selectedUser">
+      <img src="/assets/img/user-avatar.jpg" alt="User Avatar" />
+      <span class="chat-username">{{ selectedUser.username }}</span>
+    </div>
 
     <div class="messages" #messagesContainer>
       <div
@@ -57,10 +60,9 @@
       <input
         type="text"
         placeholder="Digite sua mensagem..."
-        id="message-input"
         [(ngModel)]="message"
       />
-      <button id="send-button" (click)="sendMessage()">Enviar</button>
+      <button (click)="sendMessage()">Enviar</button>
     </div>
   </div>
 </div>

@@ -57,4 +57,4 @@ Acesse no navegador: `http://localhost:4200`
 
 ## 📬 Contato
 
-Caso tenha dúvidas ou queira contribuir, sinta-se à vontade para abrir uma _issue_ ou enviar um _pull request_.
+Caso tenha dúvidas ou queira contribuir, sinta-se à vontade para abrir uma _issue_ ou enviar um _pull request_.visua

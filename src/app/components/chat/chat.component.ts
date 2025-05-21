@@ -6,6 +6,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BackendService } from '../../../services/backend.service';
@@ -29,12 +30,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   selectedUser: any = null;
 
+  isMobile: boolean = false;
+  menuOpen: boolean = false;
+
   private pollingSubscription?: Subscription;
   private currentReceiverId?: number;
 
   constructor(private homeChat: BackendService) {}
 
   ngOnInit(): void {
+    this.checkIsMobile();
+
     this.homeChat.homeChat().subscribe(
       (response: any) => {
         this.users = response.users || [];
@@ -50,6 +56,31 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopPolling();
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  // Detecta se é mobile
+  private checkIsMobile() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  @HostListener('window:resize')
+  handleResize = () => {
+    const wasMobile = this.isMobile;
+    this.checkIsMobile();
+    if (!this.isMobile) {
+      this.menuOpen = false; // se virou desktop, fecha o menu
+    }
+  };
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    if (this.isMobile) {
+      this.menuOpen = false;
+    }
   }
 
   get filteredUsers() {
@@ -66,9 +97,13 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.loadChat(receiverId);
     this.selectedUser = this.users.find((u) => u.id === receiverId);
 
+    if (this.isMobile) {
+      this.closeMenu();
+    }
+
     this.pollingSubscription = interval(1000).subscribe(() => {
       if (this.currentReceiverId) {
-        this.loadChat(this.currentReceiverId);
+        this.loadChat(this.currentReceiverId, false);
       }
     });
   }
