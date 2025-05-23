@@ -1,4 +1,4 @@
-# Angular Frontend - Chat App
+# Angular Frontend - Falaê
 
 Este é o frontend da aplicação de chat desenvolvida em Angular, que se comunica com uma API Node.js utilizando JWT para autenticação. O projeto conta com três componentes principais: **Login**, **Registro** e **Chat**.
 
